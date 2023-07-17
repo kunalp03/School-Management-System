@@ -1,0 +1,2 @@
+# School-Management-System
+The "School Management System" is a Java application that uses JDBC to connect to a MySQL database and provides functionality for managing student information, fees, and exam details. It allows for tasks such as adding new students, updating student details, issuing transfer certificates, managing fees, and maintaining exam records.The project showcases fundamental Java programming skills and database integration using JDBC.
