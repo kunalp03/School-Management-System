@@ -1,5 +1,6 @@
 package com.kunal;
 import java.util.InputMismatchException;
+import java.util.Locale;
 import java.util.Scanner;
 import java.sql.*;
 
@@ -43,6 +44,7 @@ public class Operations {
         }
     }
 
+    /*********************************************STUDENT MANAGEMENT SYSTEM************************************************/
     private static void handleStudentManagement() {
         System.out.println("\nWELCOME TO STUDENT MANAGEMENT SYSTEM\n");
         System.out.println("A. NEW ADMISSION");
@@ -50,7 +52,7 @@ public class Operations {
         System.out.println("C. ISSUE TC");
         System.out.println("D. Back to Previous");
         System.out.print("Enter your choice (a-d): ");
-        String choice = scanner.next();
+        String choice = scanner.next().toLowerCase();
 
         System.out.println("Initial Details-");
         int result = displayStudents();
@@ -81,40 +83,6 @@ public class Operations {
         }
     }
 
-    private static void handleFeeManagement() {
-        System.out.println("WELCOME TO FEE MANAGEMENT SYSTEM");
-        System.out.println("A. NEW FEE");
-        System.out.print("Enter your choice: ");
-        String choice = scanner.next();
-
-        switch (choice) {
-            case "a":
-                insertFee();
-                break;
-            default:
-                System.out.println("Enter correct choice...!!");
-        }
-    }
-
-    private static void handleExamManagement() {
-        System.out.println("WELCOME TO EXAM MANAGEMENT SYSTEM");
-        System.out.println("A. EXAM DETAILS");
-        System.out.println("B. DELETE DETAILS");
-        System.out.print("Enter your choice: ");
-        String choice = scanner.next();
-
-        switch (choice) {
-            case "a":
-                insertExam();
-                break;
-            case "b":
-                deleteExam();
-                break;
-            default:
-                System.out.println("Enter correct choice...!!");
-        }
-    }
-
     private static void insertStudent() {
         try (Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/student_management", "root", "kunal@333");
              Statement stmt = conn.createStatement()) {
@@ -125,7 +93,7 @@ public class Operations {
             int admno = scanner.nextInt();
 
             if(checkDuplicate(admno)){
-                System.out.println("Admission no : "+admno+" already exist");
+                System.out.println("Admission no : "+admno+" already exist!!");
                 return;
             }
 
@@ -185,7 +153,7 @@ public class Operations {
             System.out.print("Enter Admission No: ");
             int tempst = scanner.nextInt();
             if (!checkDuplicate(tempst)){
-                System.out.println("Admission no : "+tempst+" does not exist");
+                System.out.println("Admission no : "+tempst+" does not exist!!");
                 return;
             }
             System.out.print("Enter new class: ");
@@ -206,7 +174,7 @@ public class Operations {
             System.out.print("Enter admission no to be deleted: ");
             int temp = scanner.nextInt();
             if (!checkDuplicate(temp)){
-                System.out.println("Admission no : "+temp+" does not exist");
+                System.out.println("Admission no : "+temp+" does not exist!!");
                 return;
             }
             System.out.print("Are you sure you want to delete the record (y/n): ");
@@ -215,10 +183,30 @@ public class Operations {
             if (ans.equalsIgnoreCase("y")) {
                 String sql = String.format("DELETE FROM student WHERE admno=%d", temp);
                 stmt.executeUpdate(sql);
-                System.out.println("admission no = "+temp+ " deleted successfully");
+                System.out.println("admission no : "+temp+ " deleted successfully!!");
             }
         } catch (SQLException e) {
             e.printStackTrace();
+        }
+    }
+
+    /************************************ FEE MANAGEMENT SYSTEM **********************************************/
+    private static void handleFeeManagement() {
+        System.out.println("WELCOME TO FEE MANAGEMENT SYSTEM");
+        System.out.println("A. NEW FEE");
+        System.out.println("B. BACK");
+        System.out.print("Enter your choice: ");
+        String choice = scanner.next().toLowerCase();
+
+        switch (choice) {
+            case "a":
+                insertFee();
+                break;
+            case "b":
+                System.out.println("Going Back..................");
+                break;
+            default:
+                System.out.println("Enter correct choice...!!");
         }
     }
 
@@ -229,7 +217,7 @@ public class Operations {
             System.out.print("Enter adm no: ");
             int admno = scanner.nextInt();
             if (!checkDuplicate(admno)){
-                System.out.println("Admission no : "+admno+" does not exist");
+                System.out.println("Admission no : "+admno+" does not exist!!");
                 return;
             }
             System.out.print("Enter fee amount: ");
@@ -245,6 +233,30 @@ public class Operations {
         }
     }
 
+    /***************************************** EXAM MANAGEMENT SYSTEM ***********************************************/
+    private static void handleExamManagement() {
+        System.out.println("WELCOME TO EXAM MANAGEMENT SYSTEM");
+        System.out.println("A. EXAM DETAILS");
+        System.out.println("B. DELETE DETAILS");
+        System.out.println("C. BACK");
+        System.out.print("Enter your choice: ");
+        String choice = scanner.next().toLowerCase();
+
+        switch (choice) {
+            case "a":
+                insertExam();
+                break;
+            case "b":
+                deleteExam();
+                break;
+            case "c":
+                System.out.println("Going Back........................");
+                break;
+            default:
+                System.out.println("Enter correct choice...!!");
+        }
+    }
+
     private static void insertExam() {
         try (Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/student_management", "root", "kunal@333");
              Statement stmt = conn.createStatement()) {
@@ -255,7 +267,7 @@ public class Operations {
             int admno = scanner.nextInt();
             System.out.print("Enter percentage: ");
             float per = scanner.nextFloat();
-            System.out.print("Enter result: ");
+            System.out.print("Enter result: (pass/fail)");
             String res = scanner.next();
 
             String sql = String.format("INSERT INTO exam(sname, admno, per, res) VALUES ('%s', %d, %f, '%s')",
@@ -272,35 +284,42 @@ public class Operations {
 
             System.out.println();
             System.out.print("Enter adm no to be deleted: ");
-            int temp = scanner.nextInt();
+            int admno = scanner.nextInt();
+            if (!checkDuplicate(admno)){
+                System.out.println("Admission no : "+admno+" does not exist!!");
+                return;
+            }
             System.out.print("Are you sure you want to delete the record (y/n): ");
             String ans = scanner.next();
 
             if (ans.equalsIgnoreCase("y")) {
-                String sql = String.format("DELETE FROM exam WHERE admno=%d", temp);
+                String sql = String.format("DELETE FROM exam WHERE admno=%d", admno);
                 stmt.executeUpdate(sql);
+                System.out.println("Details of Admission no : "+admno+" are deleted!!");
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
 
+    /************************************************** OTHER METHODS ******************************************/
     //method to check if table is empty
     private static boolean checkEmpty() {
         try (Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/student_management", "root", "kunal@333");
              Statement stmt = conn.createStatement()) {
-            String sql = "SELECT COUNT(*) AS count FROM student";
-            ResultSet rs = stmt.executeQuery(sql);
+            //it can throw SQL exception
+            String sql = "SELECT COUNT(*) AS count FROM student";       //gives no of rows present in student table
+            ResultSet rs = stmt.executeQuery(sql);              //sql query executed using following, stores resultSet object
 
             if (rs.next()) {
-                int count = rs.getInt("count");
+                int count = rs.getInt("count");     //rs.getInt retrieves integer value from current row
                 if (count == 0) {
-                    System.out.println("Initially No New Admissions");
+                    System.out.println("Initially No New Admissions!!");
                     return false;
                 }
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            e.printStackTrace();        //shows the details of an exception
         }
         return true;
     }
