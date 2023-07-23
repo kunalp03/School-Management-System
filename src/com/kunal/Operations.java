@@ -1,6 +1,5 @@
 package com.kunal;
 import java.util.InputMismatchException;
-import java.util.Locale;
 import java.util.Scanner;
 import java.sql.*;
 
@@ -228,6 +227,7 @@ public class Operations {
             String sql = String.format("INSERT INTO fee(admno, fee, month) VALUES (%d, %f, '%s')",
                     admno, fee, month);
             stmt.executeUpdate(sql);
+            System.out.println("Fee of adm no : "+admno+ " for month : "+month+ " added successfully!!");
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -261,18 +261,24 @@ public class Operations {
         try (Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/student_management", "root", "kunal@333");
              Statement stmt = conn.createStatement()) {
 
-            System.out.print("Enter Student Name: ");
-            String sname = scanner.next();
             System.out.print("Enter Admission No: ");
             int admno = scanner.nextInt();
+            if (!checkDuplicate(admno)){
+                System.out.println("Admission no : "+admno+" does not exist!!");
+                return;
+            }
+            System.out.print("Enter Student Name: ");
+            String sname = scanner.next();
             System.out.print("Enter percentage: ");
             float per = scanner.nextFloat();
-            System.out.print("Enter result: (pass/fail)");
+            System.out.print("Enter result(pass/fail) : ");
             String res = scanner.next();
 
             String sql = String.format("INSERT INTO exam(sname, admno, per, res) VALUES ('%s', %d, %f, '%s')",
                     sname, admno, per, res);
             stmt.executeUpdate(sql);
+
+            System.out.println("Exam Details Inserted Successfully!!");
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -302,7 +308,7 @@ public class Operations {
         }
     }
 
-    /************************************************** OTHER METHODS ******************************************/
+    /******************************************** OTHER UTILITY METHODS ******************************************/
     //method to check if table is empty
     private static boolean checkEmpty() {
         try (Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/student_management", "root", "kunal@333");
