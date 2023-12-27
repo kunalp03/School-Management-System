@@ -83,7 +83,7 @@ public class Operations {
     }
 
     private static void insertStudent() {
-        try (Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/student_management", "root", "kunal@333");
+        try (Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/student_management", "root", "root");
              Statement stmt = conn.createStatement()) {
 
             System.out.print("Enter Student's Name: ");
@@ -116,7 +116,7 @@ public class Operations {
             return 1;
         }
         System.out.println("Details are :");
-        try (Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/student_management", "root", "kunal@333");
+        try (Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/student_management", "root", "root");
             Statement stmt = conn.createStatement()) {      //to execute sql queries
             String sql = "SELECT * FROM student";
             ResultSet rs = stmt.executeQuery(sql);
@@ -145,7 +145,7 @@ public class Operations {
             return;
         }
 
-        try (Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/student_management", "root", "kunal@333");
+        try (Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/student_management", "root", "root");
              Statement stmt = conn.createStatement()) {
 
             System.out.println();
@@ -166,7 +166,7 @@ public class Operations {
     }
 
     private static void deleteStudent() {
-        try (Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/student_management", "root", "kunal@333");
+        try (Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/student_management", "root", "root");
              Statement stmt = conn.createStatement()) {
 
             System.out.println();
@@ -210,7 +210,7 @@ public class Operations {
     }
 
     private static void insertFee() {
-        try (Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/student_management", "root", "kunal@333");
+        try (Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/student_management", "root", "root");
              Statement stmt = conn.createStatement()) {
 
             System.out.print("Enter adm no: ");
@@ -258,7 +258,7 @@ public class Operations {
     }
 
     private static void insertExam() {
-        try (Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/student_management", "root", "kunal@333");
+        try (Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/student_management", "root", "root");
              Statement stmt = conn.createStatement()) {
 
             System.out.print("Enter Admission No: ");
@@ -285,7 +285,7 @@ public class Operations {
     }
 
     private static void deleteExam() {
-        try (Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/student_management", "root", "kunal@333");
+        try (Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/student_management", "root", "root");
              Statement stmt = conn.createStatement()) {
 
             System.out.println();
@@ -311,7 +311,7 @@ public class Operations {
     /******************************************** OTHER UTILITY METHODS ******************************************/
     //method to check if table is empty
     private static boolean checkEmpty() {
-        try (Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/student_management", "root", "kunal@333");
+        try (Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/student_management", "root", "root");
              Statement stmt = conn.createStatement()) {
             //it can throw SQL exception
             String sql = "SELECT COUNT(*) AS count FROM student";       //gives no of rows present in student table
@@ -333,7 +333,7 @@ public class Operations {
     //Method for if adm no is aleady exist or not exist
     private static boolean checkDuplicate(int admno) {
 
-        try (Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/student_management", "root", "kunal@333");
+        try (Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/student_management", "root", "root");
              Statement stmt = conn.createStatement()) {
             String insertSql = "SELECT * FROM student";
             ResultSet insertRs = stmt.executeQuery(insertSql);
